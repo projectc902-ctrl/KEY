@@ -5,9 +5,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
-import Register from "./pages/Register"; // Import the new Register component
+import Register from "./pages/Register";
+import Statistics from "./pages/Statistics"; // Import the new Statistics component
 import NotFound from "./pages/NotFound";
-import { SessionContextProvider } from "@/components/auth/SessionContextProvider"; // Import SessionContextProvider
+import { SessionContextProvider } from "@/components/auth/SessionContextProvider";
 
 const queryClient = new QueryClient();
 
@@ -17,11 +18,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <SessionContextProvider> {/* Wrap with SessionContextProvider */}
+        <SessionContextProvider>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/register" element={<Register />} /> {/* Add the new register route */}
+            <Route path="/register" element={<Register />} />
+            <Route path="/statistics" element={<Statistics />} /> {/* Add the new statistics route */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
