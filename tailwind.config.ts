@@ -62,11 +62,25 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom colors from prompt
+        'purple-primary': 'var(--purple-primary)',
+        'purple-accent': 'var(--purple-accent)',
+        'light-purple-tint': 'var(--light-purple-tint)',
+        'green-income': 'var(--green-income)',
+        'red-expense': 'var(--red-expense)',
+        'yellow-warning': 'var(--yellow-warning)',
+        'orange-gradient-start': 'var(--orange-gradient-start)',
+        'orange-gradient-end': 'var(--orange-gradient-end)',
+        'facebook-blue': 'var(--facebook-blue)',
+        'google-red': 'var(--google-red)',
+        'twitter-light-blue': 'var(--twitter-light-blue)',
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+        lg: "1.25rem", // Increased for more rounded shapes
+        md: "0.75rem", // Adjusted
+        sm: "0.5rem", // Adjusted
+        xl: "1.5rem", // Added for larger rounded elements
+        "2xl": "2rem", // Added for very rounded elements like pill buttons
       },
       keyframes: {
         "accordion-down": {

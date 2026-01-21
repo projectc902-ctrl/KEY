@@ -49,6 +49,19 @@
     --sidebar-border: 220 13% 91%;
 
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Custom colors */
+    --purple-primary: #8B5CF6;
+    --purple-accent: #A78BFA;
+    --light-purple-tint: #FAF5FF;
+    --green-income: #10B981;
+    --red-expense: #EF4444;
+    --yellow-warning: #F59E0B;
+    --orange-gradient-start: #FF8C42;
+    --orange-gradient-end: #FF5733;
+    --facebook-blue: #3B5998;
+    --google-red: #DB4437;
+    --twitter-light-blue: #1DA1F2;
   }
 
   .dark {
@@ -96,6 +109,6 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans; /* Using font-sans for a modern look */
   }
 }
