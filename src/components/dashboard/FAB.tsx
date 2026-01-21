@@ -2,9 +2,16 @@ import React from "react";
 import { Plus, ArrowDown, ArrowUp, Repeat } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 const FAB = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const navigate = useNavigate();
+
+  const handleAddTransaction = (type: "income" | "expense" | "transfer") => {
+    navigate(`/add-transaction?type=${type}`);
+    setIsOpen(false); // Close FAB after selection
+  };
 
   return (
     <div className="fixed bottom-20 left-1/2 -translate-x-1/2 transform md:bottom-8">
@@ -14,7 +21,7 @@ const FAB = () => {
             variant="ghost"
             size="icon"
             className="h-12 w-12 rounded-full bg-green-income shadow-md hover:scale-105 hover:bg-green-income/90"
-            onClick={() => console.log("Add Income")}
+            onClick={() => handleAddTransaction("income")}
           >
             <ArrowDown className="h-6 w-6 text-white" />
           </Button>
@@ -22,7 +29,7 @@ const FAB = () => {
             variant="ghost"
             size="icon"
             className="h-12 w-12 rounded-full bg-red-expense shadow-md hover:scale-105 hover:bg-red-expense/90"
-            onClick={() => console.log("Add Expense")}
+            onClick={() => handleAddTransaction("expense")}
           >
             <ArrowUp className="h-6 w-6 text-white" />
           </Button>
@@ -30,7 +37,7 @@ const FAB = () => {
             variant="ghost"
             size="icon"
             className="h-12 w-12 rounded-full bg-blue-500 shadow-md hover:scale-105 hover:bg-blue-500/90" // Using default blue for now
-            onClick={() => console.log("Add Transfer")}
+            onClick={() => handleAddTransaction("transfer")}
           >
             <Repeat className="h-6 w-6 text-white" />
           </Button>

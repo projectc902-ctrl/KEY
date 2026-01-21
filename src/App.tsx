@@ -6,7 +6,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Register from "./pages/Register";
-import Statistics from "./pages/Statistics"; // Import the new Statistics component
+import Statistics from "./pages/Statistics";
+import AddTransaction from "./pages/AddTransaction"; // Import the new AddTransaction component
 import NotFound from "./pages/NotFound";
 import { SessionContextProvider } from "@/components/auth/SessionContextProvider";
 
@@ -23,7 +24,8 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/statistics" element={<Statistics />} /> {/* Add the new statistics route */}
+            <Route path="/statistics" element={<Statistics />} />
+            <Route path="/add-transaction" element={<AddTransaction />} /> {/* Add the new add transaction route */}
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
