@@ -1,28 +1,50 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { User, Lock, Facebook, Twitter, Chrome } from "lucide-react"; // Changed Google to Chrome
+import { Link, useNavigate } from "react-router-dom";
+import { User, Lock, Facebook, Twitter, Chrome } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CustomInput } from "@/components/ui/custom-input";
 import { CustomCheckbox } from "@/components/ui/custom-checkbox";
 import { Separator } from "@/components/ui/separator";
 import { SocialButton } from "@/components/ui/social-button";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client"; // Import supabase client
+import { showSuccess, showError } from "@/utils/toast"; // Import toast utilities
 
 const LoginForm = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [rememberMe, setRememberMe] = React.useState(false);
   const [isEmailValid, setIsEmailValid] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    // Simple email validation for demonstration
     setIsEmailValid(email.includes("@") && email.includes("."));
   }, [email]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login attempt:", { email, password, rememberMe });
-    // Implement actual login logic here
+    setIsSubmitting(true);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      showError(error.message);
+    } else {
+      // Redirection is handled by SessionContextProvider
+    }
+    setIsSubmitting(false);
+  };
+
+  const handleJoin = () => {
+    // For now, the "Join" button will trigger a sign-up flow.
+    // In a real app, this might navigate to a dedicated registration page.
+    // For demonstration, let's assume it's a simple sign-up.
+    console.log("Join button clicked. Implement registration logic here.");
+    showError("Registration is not yet implemented. Please use an existing account or implement signup.");
   };
 
   return (
@@ -36,7 +58,7 @@ const LoginForm = () => {
           by email address and password
         </p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleLogin} className="space-y-6">
           <CustomInput
             leftIcon={User}
             placeholder="yourmail@company.com"
@@ -44,6 +66,7 @@ const LoginForm = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             showValidationCheck={isEmailValid}
+            disabled={isSubmitting}
           />
           <CustomInput
             leftIcon={Lock}
@@ -51,6 +74,7 @@ const LoginForm = () => {
             isPassword
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            disabled={isSubmitting}
           />
 
           <div className="flex items-center justify-between text-sm">
@@ -59,6 +83,7 @@ const LoginForm = () => {
                 id="remember-me"
                 checked={rememberMe}
                 onCheckedChange={(checked) => setRememberMe(!!checked)}
+                disabled={isSubmitting}
               />
               <label
                 htmlFor="remember-me"
@@ -82,13 +107,16 @@ const LoginForm = () => {
                 "h-14 w-3/5 rounded-2xl bg-gradient-to-r from-purple-primary to-purple-accent text-lg font-bold text-white shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl",
                 "shadow-purple-primary/30 hover:shadow-purple-primary/50",
               )}
+              disabled={isSubmitting}
             >
-              Login
+              {isSubmitting ? "Logging in..." : "Login"}
             </Button>
             <Button
               type="button"
               variant="outline"
               className="h-14 w-2/5 rounded-2xl border-2 border-purple-primary text-lg font-bold text-purple-primary transition-all hover:bg-purple-primary/10 hover:text-purple-accent"
+              onClick={handleJoin}
+              disabled={isSubmitting}
             >
               Join
             </Button>
@@ -102,9 +130,9 @@ const LoginForm = () => {
         </div>
 
         <div className="flex justify-center space-x-4">
-          <SocialButton icon={Facebook} bgColor="bg-facebook-blue" />
-          <SocialButton icon={Chrome} bgColor="bg-google-red" /> {/* Changed Google to Chrome */}
-          <SocialButton icon={Twitter} bgColor="bg-twitter-light-blue" />
+          <SocialButton icon={Facebook} bgColor="bg-facebook-blue" disabled={isSubmitting} />
+          <SocialButton icon={Chrome} bgColor="bg-google-red" disabled={isSubmitting} />
+          <SocialButton icon={Twitter} bgColor="bg-twitter-light-blue" disabled={isSubmitting} />
         </div>
 
         <p className="mt-12 text-center text-xs text-gray-500">
