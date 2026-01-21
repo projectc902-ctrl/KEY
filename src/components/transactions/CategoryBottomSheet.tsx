@@ -1,7 +1,7 @@
 import React from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { Plus, Check } from "lucide-react";
+import { Plus, Check, Utensils, ReceiptText, HeartPulse, Plane, Book, Home, Car, FileText, Briefcase, Laptop, TrendingUp, Gift } from "lucide-react"; // Import all necessary Lucide icons
 import { cn } from "@/lib/utils";
 
 // Dummy categories for demonstration
@@ -40,18 +40,18 @@ interface CategoryBottomSheetProps {
 }
 
 const iconMap: { [key: string]: React.ElementType } = {
-  Utensils: require("lucide-react").Utensils,
-  ReceiptText: require("lucide-react").ReceiptText,
-  HeartPulse: require("lucide-react").HeartPulse,
-  Plane: require("lucide-react").Plane,
-  Book: require("lucide-react").Book,
-  Home: require("lucide-react").Home,
-  Car: require("lucide-react").Car,
-  FileText: require("lucide-react").FileText,
-  Briefcase: require("lucide-react").Briefcase,
-  Laptop: require("lucide-react").Laptop,
-  TrendingUp: require("lucide-react").TrendingUp,
-  Gift: require("lucide-react").Gift,
+  Utensils: Utensils,
+  ReceiptText: ReceiptText,
+  HeartPulse: HeartPulse,
+  Plane: Plane,
+  Book: Book,
+  Home: Home,
+  Car: Car,
+  FileText: FileText,
+  Briefcase: Briefcase,
+  Laptop: Laptop,
+  TrendingUp: TrendingUp,
+  Gift: Gift,
 };
 
 const CategoryBottomSheet: React.FC<CategoryBottomSheetProps> = ({
