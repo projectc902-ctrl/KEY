@@ -7,8 +7,8 @@ import { CustomCheckbox } from "@/components/ui/custom-checkbox";
 import { Separator } from "@/components/ui/separator";
 import { SocialButton } from "@/components/ui/social-button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client"; // Import supabase client
-import { showSuccess, showError } from "@/utils/toast"; // Import toast utilities
+import { supabase } from "@/integrations/supabase/client";
+import { showSuccess, showError } from "@/utils/toast";
 
 const LoginForm = () => {
   const [email, setEmail] = React.useState("");
