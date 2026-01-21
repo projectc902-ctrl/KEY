@@ -1,19 +1,21 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { User, Lock, Facebook, Twitter, Chrome } from "lucide-react";
+import { User, Lock, Mail, PersonStanding } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CustomInput } from "@/components/ui/custom-input";
-import { CustomCheckbox } from "@/components/ui/custom-checkbox";
 import { Separator } from "@/components/ui/separator";
 import { SocialButton } from "@/components/ui/social-button";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client"; // Import supabase client
-import { showSuccess, showError } from "@/utils/toast"; // Import toast utilities
+import { supabase } from "@/integrations/supabase/client";
+import { showSuccess, showError } from "@/utils/toast";
+import { Facebook, Twitter, Chrome } from "lucide-react";
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [rememberMe, setRememberMe] = React.useState(false);
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
   const [isEmailValid, setIsEmailValid] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const navigate = useNavigate();
@@ -22,48 +24,77 @@ const LoginForm = () => {
     setIsEmailValid(email.includes("@") && email.includes("."));
   }, [email]);
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    if (password !== confirmPassword) {
+      showError("Passwords do not match!");
+      setIsSubmitting(false);
+      return;
+    }
+
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
     });
 
     if (error) {
       showError(error.message);
-    } else {
-      // Redirection is handled by SessionContextProvider
-      showSuccess("Login successful! Redirecting to dashboard.");
+    } else if (data.user && data.session) {
+      showSuccess("Registration successful! Redirecting to dashboard.");
+      // SessionContextProvider will handle navigation to /dashboard
+    } else if (data.user && !data.session) {
+      showSuccess("Registration successful! Please check your email to verify your account.");
+      navigate("/"); // Redirect to login to await email verification
     }
     setIsSubmitting(false);
-  };
-
-  const handleJoin = () => {
-    navigate("/register"); // Navigate to the new registration page
   };
 
   return (
     <div className="flex w-full flex-col items-center justify-center p-8 md:p-12 lg:w-1/2 lg:p-16">
       <div className="w-full max-w-md">
         <h2 className="mb-2 text-center text-4xl font-bold text-purple-primary md:text-left">
-          Welcome Back :)
+          Create Account
         </h2>
         <p className="mb-8 text-center text-sm text-gray-500 md:text-left">
-          To keep connected with us please login with your personal information
-          by email address and password
+          Join us to manage your finances easily and effectively!
         </p>
 
-        <form onSubmit={handleLogin} className="space-y-6">
+        <form onSubmit={handleRegister} className="space-y-6">
           <CustomInput
-            leftIcon={User}
+            leftIcon={PersonStanding}
+            placeholder="First Name"
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+          <CustomInput
+            leftIcon={PersonStanding}
+            placeholder="Last Name"
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            disabled={isSubmitting}
+            required
+          />
+          <CustomInput
+            leftIcon={Mail}
             placeholder="yourmail@company.com"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             showValidationCheck={isEmailValid}
             disabled={isSubmitting}
+            required
           />
           <CustomInput
             leftIcon={Lock}
@@ -72,30 +103,17 @@ const LoginForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             disabled={isSubmitting}
+            required
           />
-
-          <div className="flex items-center justify-between text-sm">
-            <div className="flex items-center space-x-2">
-              <CustomCheckbox
-                id="remember-me"
-                checked={rememberMe}
-                onCheckedChange={(checked) => setRememberMe(!!checked)}
-                disabled={isSubmitting}
-              />
-              <label
-                htmlFor="remember-me"
-                className="cursor-pointer text-gray-600"
-              >
-                Remember me
-              </label>
-            </div>
-            <Link
-              to="/forgot-password"
-              className="text-gray-500 transition-colors hover:text-purple-primary"
-            >
-              Forgot password?
-            </Link>
-          </div>
+          <CustomInput
+            leftIcon={Lock}
+            placeholder="Confirm Password"
+            isPassword
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            disabled={isSubmitting}
+            required
+          />
 
           <div className="flex items-center justify-center gap-4">
             <Button
@@ -106,16 +124,16 @@ const LoginForm = () => {
               )}
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Logging in..." : "Login"}
+              {isSubmitting ? "Signing Up..." : "Sign Up"}
             </Button>
             <Button
               type="button"
               variant="outline"
               className="h-14 w-2/5 rounded-2xl border-2 border-purple-primary text-lg font-bold text-purple-primary transition-all hover:bg-purple-primary/10 hover:text-purple-accent"
-              onClick={handleJoin}
+              onClick={() => navigate("/")}
               disabled={isSubmitting}
             >
-              Join
+              Login
             </Button>
           </div>
         </form>
@@ -141,4 +159,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default RegisterForm;
