@@ -3,16 +3,27 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "react-router-dom";
 import { showSuccess, showError } from "@/utils/toast";
+import SelectTypeField from "./SelectTypeField";
+import CategoryField from "./CategoryField";
 
-// Placeholder for form fields - will be implemented in next steps
+interface Category {
+  id: string;
+  name: string;
+  icon: string;
+  color: string;
+}
+
 const TransactionForm = () => {
   const [searchParams] = useSearchParams();
-  const transactionType = searchParams.get("type") || "expense"; // Default to expense
+  const initialTransactionType = (searchParams.get("type") as "expense" | "income" | "transfer") || "expense";
 
+  const [transactionType, setTransactionType] = React.useState<"expense" | "income">(
+    initialTransactionType === "transfer" ? "expense" : initialTransactionType,
+  );
   const [amount, setAmount] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [selectedDate, setSelectedDate] = React.useState<Date | undefined>(new Date());
-  const [selectedCategory, setSelectedCategory] = React.useState<{ id: string; name: string; icon: React.ElementType; color: string } | null>(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<Category | null>(null);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,11 +69,21 @@ const TransactionForm = () => {
         Add {transactionType}
       </h2>
 
-      {/* Placeholder for Select Type Field */}
-      <div className="mb-4 p-4 border rounded-lg">Select Type Field (Coming Soon)</div>
+      {/* Select Type Field */}
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-medium text-gray-700">Type</label>
+        <SelectTypeField selectedType={transactionType} onTypeChange={setTransactionType} />
+      </div>
 
-      {/* Placeholder for Category Field */}
-      <div className="mb-4 p-4 border rounded-lg">Category Field (Coming Soon)</div>
+      {/* Category Field */}
+      <div className="mb-4">
+        <label className="mb-2 block text-sm font-medium text-gray-700">Category</label>
+        <CategoryField
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+          transactionType={transactionType}
+        />
+      </div>
 
       {/* Amount Input Field */}
       <div className="mb-6">
