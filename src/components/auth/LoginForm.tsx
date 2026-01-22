@@ -41,12 +41,12 @@ const LoginForm = () => {
   };
 
   const handleJoin = () => {
-    navigate("/register"); // Navigate to the new registration page
+    navigate("/register");
   };
 
   return (
-    <div className="flex w-full flex-col items-center justify-center p-8 md:p-12 lg:w-1/2 lg:p-16">
-      <div className="w-full max-w-md">
+    <div className="flex w-full flex-col items-center justify-center p-8 md:p-12 lg:w-[45%] lg:p-10"> {/* Adjusted width and padding */}
+      <div className="w-full max-w-sm"> {/* Adjusted max-width for tighter form */}
         <h2 className="mb-2 text-center text-4xl font-bold text-purple-primary md:text-left">
           Welcome Back :)
         </h2>
