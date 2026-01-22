@@ -9,11 +9,10 @@ const LoginIllustration = () => {
         <span className="text-3xl font-bold">$budgetab</span>
       </div>
       <div className="relative z-10 flex h-full w-full items-center justify-center">
-        {/* Placeholder for the illustration image */}
         <img
-          src="/placeholder.svg" // Using a placeholder for now, will replace with actual image
+          src="/financial-management-illustration.jpeg" // Menggunakan gambar yang baru diunggah
           alt="Financial Management Illustration"
-          className="max-h-[80%] w-auto object-contain"
+          className="max-h-[90%] w-auto object-contain drop-shadow-2xl" // Menyesuaikan ukuran dan menambahkan shadow
         />
       </div>
     </div>
