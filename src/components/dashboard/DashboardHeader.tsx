@@ -2,21 +2,36 @@ import React from "react";
 import { Bell, Settings } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useSession } from "@/components/auth/SessionContextProvider"; // Import useSession
 
 const DashboardHeader = () => {
-  const userName = "Leslie Alexander";
+  const { user } = useSession(); // Get user from session
+  const userName = user?.user_metadata?.first_name && user?.user_metadata?.last_name
+    ? `${user.user_metadata.first_name} ${user.user_metadata.last_name}`
+    : user?.email || "Guest User";
+  const userEmail = user?.email || "";
+  const memberSince = user?.created_at ? new Date(user.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long' }) : "N/A";
   const greeting = "Good afternoon,"; // This could be dynamic based on time
+
+  const handleAvatarClick = () => {
+    console.log("Open photo viewer or upload new photo");
+    // Implement logic for photo viewer/upload
+  };
 
   return (
     <header className="flex items-center justify-between p-4">
       <div className="flex items-center space-x-3">
-        <Avatar className="h-12 w-12 border-2 border-white shadow-sm">
-          <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" /> {/* Placeholder avatar */}
-          <AvatarFallback>LA</AvatarFallback>
-        </Avatar>
+        <button onClick={handleAvatarClick} className="relative">
+          <Avatar className="h-14 w-14 border-2 border-white shadow-sm"> {/* Increased avatar size */}
+            <AvatarImage src={user?.user_metadata?.avatar_url || "https://github.com/shadcn.png"} alt={userName} />
+            <AvatarFallback>{userName.charAt(0).toUpperCase()}</AvatarFallback>
+          </Avatar>
+        </button>
         <div>
           <p className="text-sm text-gray-600">{greeting}</p>
           <h1 className="text-lg font-bold text-gray-900">{userName}</h1>
+          <p className="text-xs text-gray-500">{userEmail}</p>
+          <p className="text-xs text-gray-500">Member since {memberSince}</p>
         </div>
       </div>
       <div className="flex items-center space-x-4">
